@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>自己紹介とフラッシュ暗算ゲーム</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div class="container">
+        <nav>
+            <ul>
+                <li><a href="#" id="introBtn">自己紹介</a></li>
+                <li><a href="#" id="gameBtn">フラッシュ暗算ゲーム</a></li>
+            </ul>
+        </nav>
+
+        <div id="introPage" class="page">
+            <h1>自己紹介</h1>
+
+            <div id="profile-picture">
+                <div id="profile">
+                    <h2>【氏名】<br>　井手 満帆 (いで みつほ)</h2>
+                    <p>【部署 (業務内容)】<br>　MSプラットフォーム開発部 (排気管設計)</p>
+                    <p>【現住所 (出身地)】<br>　愛知県日進市 (兵庫県伊丹市)</p>
+                </div>
+
+                <!-- <div> -->
+                    <img id="picture" src="picture/profile/picture.jpg" alt="私の写真です。">
+                <!-- </div> -->
+            </div>
+
+            <div id="hobby-and-picture">
+                <div id="hobby-picture">
+                    <img id="photo" src="" alt="旅行先の写真です。">
+                </div>
+
+                <div id="hobby">
+                    <p>【趣味】</p>
+                    <ol>
+                      <li>旅行</li>
+                      <li>chatGPTでジブリ風の画像作成</li>
+                    </ol>
+                    <br>
+                    <p>【直近の旅行先】</p>
+                    <ul>
+                        <li><strong>沖縄</strong> ：育休中に家族で旅行</li>
+                        <li><strong>北海道</strong> ：GWに家族で旅行予定</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div id="gamePage" class="page hidden">
+            <h1>フラッシュ暗算ゲーム</h1>
+            <div id="difficultySelection">
+                <h2>難易度を選択してください</h2>
+                <label>
+                    <input type="radio" name="difficulty" value="easy" checked> Easy😋　
+                </label>
+                <label>
+                    <input type="radio" name="difficulty" value="difficult"> Difficult😰　
+                </label>
+                <label>
+                    <input type="radio" name="difficulty" value="nightmare"> Nightmare😈
+                </label><br><br>
+                <button id="startBtn">スタート</button>
+            </div>
+
+            <div id="number" class="hidden"></div>
+
+            <div id="answers" class="hidden">
+                <input type="text" placeholder="合計を入力してください">
+            </div>
+
+            <button id="submitBtn" class="hidden">送信</button>
+            <button id="retryBtn" class="hidden">もう一度トライ</button>
+            <div id="result"></div>
+        </div>
+
+    </div>
+
+    <script src="script.js"></script>
+
+</body>
+
+</html>
