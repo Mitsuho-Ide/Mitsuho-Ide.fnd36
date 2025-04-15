@@ -5,7 +5,6 @@ const introBtn = document.getElementById('introBtn'); // HTMLのID名:introBtn (
 const gameBtn = document.getElementById('gameBtn'); // HTMLのID名:gameBtn (ナビゲーションバーのゲームボタン)
 const introPage = document.getElementById('introPage'); // HTMLのID名:introPage (自己紹介ページ)
 const gamePage = document.getElementById('gamePage'); // HTMLのID名:gamePage (ゲームページ)
-const imageFolder = 'picture/hobby/'; // 画像フォルダ
 const images = [
   'picture1.png',
   'picture2.png',
@@ -46,13 +45,13 @@ function showNextImage() { // フェードアウト
   photoElement.style.opacity = 0;
   setTimeout(function () { // インデックスを更新
     currentImageIndex = (currentImageIndex + 1) % images.length; // 新しい画像のソースを設定
-    photoElement.src = imageFolder + images[currentImageIndex]; // フェードイン
+    photoElement.src = images[currentImageIndex]; // フェードイン
     photoElement.style.opacity = 1;
   }, 1000); // フェードアウトの1秒後に、次の画像を表示
 }
 
 function startSlideshow() { // 最初の画像を設定
-  photoElement.src = imageFolder + images[currentImageIndex];
+  photoElement.src = images[currentImageIndex];
   photoElement.style.opacity = 1;
   setInterval(showNextImage, 6000); // 6秒ごとにshowNextImageを実行し画像を切り替え
 }
