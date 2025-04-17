@@ -55,7 +55,7 @@ function showNextImage() { // フェードアウト
 }
 
 function startSlideshow() { // 最初の画像を設定
-  photoElement.src = imageFolder + images[currentImageIndex];
+  photoElement.src = images[currentImageIndex];
   photoElement.style.opacity = 1;
   setInterval(showNextImage, 6000); // 6秒ごとにshowNextImageを実行し画像を切り替え
 }
