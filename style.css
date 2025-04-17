@@ -1,5 +1,5 @@
 /* ページ全体の設定 */
-body {
+#body {
   background-color: #f0f8ff; /* 薄い水色の背景 */
   font-family: 'Arial', sans-serif;
   color: #333;
@@ -110,6 +110,10 @@ nav a:hover {
   transition: opacity 1s ease;
 }
 
+.profile-detail {
+  margin-top: 20px;
+}
+
 
 /* ゲームページの設定 */
 #gamePage {
@@ -160,8 +164,27 @@ button:hover {
   font-weight: bold;
   transition: opacity 0.5s;
 }
+
 .incorrect {
   color: red; /* 不正解の色 */
   font-weight: bold;
   transition: opacity 0.5s;
+}
+
+
+/* まとめページの設定 */
+.summary-document {
+  margin: 50px auto;
+  width: 95%;
+  max-width: 900px; 
+}
+
+.summary-list {
+  text-align: left;
+  margin-top: 20px;
+  font-size: 1.2em;
+}
+
+.summary-list strong {
+  color:#FF9872;
 }
