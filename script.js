@@ -1,10 +1,13 @@
 'use strict'
 
 /* 変数を定義 (ゲーム用以外) */
+const htmlBody = document.getElementById('body');
 const introBtn = document.getElementById('introBtn'); // HTMLのID名:introBtn (ナビゲーションバーの自己紹介ボタン)
 const gameBtn = document.getElementById('gameBtn'); // HTMLのID名:gameBtn (ナビゲーションバーのゲームボタン)
+const summaryBtn = document.getElementById('summaryBtn'); // まとめボタン
 const introPage = document.getElementById('introPage'); // HTMLのID名:introPage (自己紹介ページ)
 const gamePage = document.getElementById('gamePage'); // HTMLのID名:gamePage (ゲームページ)
+const summaryPage = document.getElementById('summaryPage'); // まとめページ
 const images = [
   'picture1.png',
   'picture2.png',
@@ -37,6 +40,7 @@ let hideTime; //数字を表示しない時間
 let totalNumbers; //表示する数字の数
 let numberLength; //表示する数字の桁数
 let userAnswer; // ユーザーが入力した回答
+let intervalId;
 
 
 /* 関数を定義 (ゲーム用以外) */
@@ -51,7 +55,7 @@ function showNextImage() { // フェードアウト
 }
 
 function startSlideshow() { // 最初の画像を設定
-  photoElement.src = images[currentImageIndex];
+  photoElement.src = imageFolder + images[currentImageIndex];
   photoElement.style.opacity = 1;
   setInterval(showNextImage, 6000); // 6秒ごとにshowNextImageを実行し画像を切り替え
 }
@@ -95,11 +99,44 @@ function startGame() {
       numberElement.textContent = randomNumbers[currentIndex];
       setTimeout(hideNumber, displayTime);
     } else {
+      normalMode();
       numberElement.classList.add('hidden'); // 数字表示エリアを隠す
       showAnswerInput(); // 回答入力欄を表示
-    }
-  };
-  setTimeout(hideNumber, displayTime);
+    };
+  }
+  if (selectedDifficulty === "nightmare") {
+    nightmareMode ();
+  }
+    setTimeout(hideNumber, displayTime);
+}
+
+
+/* ナイトメアモードを定義した関数 */
+function nightmareMode() {
+  const darkColors = [
+    "#4E0000", // さらに暗いダークレッド
+    "#9B1D0F", // さらに暗いオレンジレッド
+    "#7A1616", // さらに暗いファイアブリック
+    "#8B0000", // さらに暗い赤
+    "#5B006B", // さらに暗い紫
+    "#3B006B", // さらに暗いインディゴ
+    "#4B1F4B"  // さらに暗いダークマゼンタ
+  ];
+
+  let currentColorIndex = 0;
+
+  // 0.1秒ごとに色を切り替える
+  intervalId = setInterval(() => {
+    htmlBody.style.backgroundColor = darkColors[currentColorIndex];
+    currentColorIndex = (currentColorIndex + 1) % darkColors.length; // インデックスを循環させる
+  }, 150); // 100ミリ秒ごとに切り替え
+}
+
+
+/* ノーマルモードを定義した関数 */
+function normalMode() {
+  clearInterval(intervalId)
+  htmlBody.style.backgroundColor = "#f0f8ff";
 }
 
 
@@ -155,7 +192,7 @@ introBtn.addEventListener('click', function () {
   introPage.classList.remove('hidden');
   gamePage.classList.remove('active');
   gamePage.classList.add('hidden');
-
+  summaryPage.classList.add('hidden'); // まとめを隠す
 });
 
 /* ゲームボタンを押した際の動作を定義 */
@@ -164,12 +201,22 @@ gameBtn.addEventListener('click', function () {
   introPage.classList.add('hidden');
   gamePage.classList.add('active');
   gamePage.classList.remove('hidden');
+  summaryPage.classList.add('hidden'); // まとめを隠す
   difficultyElement.classList.remove('hidden'); // 難易度選択を表示
   resultElement.innerHTML = ''; // 結果をクリア
   answersElement.classList.add('hidden'); // 回答入力欄を隠す
   submitBtn.classList.add('hidden'); //送信ボタンを隠す
   retryBtn.classList.add('hidden'); // 再試行ボタンを隠す
   numberElement.classList.add('hidden'); // 数字表示エリアを隠す
+});
+
+/* まとめボタンを押した際の動作を定義 */
+summaryBtn.addEventListener('click', function () {
+  introPage.classList.remove('active');
+  introPage.classList.add('hidden');
+  gamePage.classList.remove('active');
+  gamePage.classList.add('hidden');
+  summaryPage.classList.remove('hidden'); // まとめを表示
 });
 
 
