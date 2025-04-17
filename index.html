@@ -1,229 +1,129 @@
-'use strict'
+<!DOCTYPE html>
 
-/* 変数を定義 (ゲーム用以外) */
-const htmlBody = document.getElementById('body');
-const introBtn = document.getElementById('introBtn'); // HTMLのID名:introBtn (ナビゲーションバーの自己紹介ボタン)
-const gameBtn = document.getElementById('gameBtn'); // HTMLのID名:gameBtn (ナビゲーションバーのゲームボタン)
-const summaryBtn = document.getElementById('summaryBtn'); // まとめボタン
-const introPage = document.getElementById('introPage'); // HTMLのID名:introPage (自己紹介ページ)
-const gamePage = document.getElementById('gamePage'); // HTMLのID名:gamePage (ゲームページ)
-const summaryPage = document.getElementById('summaryPage'); // まとめページ
-const imageFolder = 'picture/hobby/'; // 画像フォルダ
-const images = [
-  'picture1.png',
-  'picture2.png',
-  'picture3.png',
-  'picture4.png',
-  'picture5.png',
-  'picture6.png',
-  'picture7.png',
-];
-let currentImageIndex = 0;
-const photoElement = document.getElementById('photo');
+<html lang="ja">
 
-/* 変数を定義 (DOM要素との紐付け等)(ゲーム用の要素) */
-const difficultyElement = document.getElementById('difficultySelection')
-const startBtn = document.getElementById('startBtn'); // HTMLのID名:stratBtn (ゲーム開始のスタートボタン)
-const numberElement = document.getElementById('number'); // HTMLのID名:number (数字を表示)
-const answersElement = document.getElementById('answers'); // HTMLのID名:answers (回答入力欄)
-const submitBtn = document.getElementById('submitBtn'); // HTMLのID名:submitBtn (回答送信ボタン)
-const retryBtn = document.getElementById('retryBtn'); // HTMLのID名:retryBtn (リトライボタン)
-const resultElement = document.getElementById('result'); // HTMLのID名:result (結果を表示)
-const difficultySettings = { //難易度設定。length：数値の桁数、count：数値の数、time：表示秒数
-  easy: { length: 1, count: 3, time: 1000 },
-  difficult: { length: 2, count: 5, time: 1000 },
-  nightmare: { length: 3, count: 10, time: 300 },
-};
-let randomNumbers = []; //ランダムに生成した数字の配列
-let currentIndex = 0; //randomNumbersのIndex
-let displayTime; //数字を表示する時間
-let hideTime; //数字を表示しない時間
-let totalNumbers; //表示する数字の数
-let numberLength; //表示する数字の桁数
-let userAnswer; // ユーザーが入力した回答
-let intervalId;
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>【井手】プログラミング基礎プレゼンテーション</title>
+    <link rel="stylesheet" href="style.css">
+</head>
 
+<body id="body">
+    <div class="container">
+        <nav>
+            <ul>
+                <li><a href="#" id="introBtn">自己紹介</a></li>
+                <li><a href="#" id="gameBtn">フラッシュ暗算ゲーム</a></li>
+                <li><a href="#" id="summaryBtn">まとめ</a></li>
+            </ul>
+        </nav>
 
-/* 関数を定義 (ゲーム用以外) */
-/* 写真を順番に表示 */
-function showNextImage() { // フェードアウト
-  photoElement.style.opacity = 0;
-  setTimeout(function () { // インデックスを更新
-    currentImageIndex = (currentImageIndex + 1) % images.length; // 新しい画像のソースを設定
-    photoElement.src = imageFolder + images[currentImageIndex]; // フェードイン
-    photoElement.style.opacity = 1;
-  }, 1000); // フェードアウトの1秒後に、次の画像を表示
-}
+        <div id="introPage" class="page">
+            <h1>自己紹介</h1>
 
-function startSlideshow() { // 最初の画像を設定
-  photoElement.src = imageFolder + images[currentImageIndex];
-  photoElement.style.opacity = 1;
-  setInterval(showNextImage, 6000); // 6秒ごとにshowNextImageを実行し画像を切り替え
-}
+            <div id="profile-picture">
+                <div id="profile">
+                    <h2>【氏名】<br>　井手 満帆 (いで みつほ)</h2>
+                    <p class="profile-detail">【部署 (業務内容)】<br>　MSプラットフォーム開発部 (排気管設計)</p>
+                    <p class="profile-detail">【現住所 (出身地)】<br>　愛知県日進市 (兵庫県伊丹市)</p>
+                </div>
 
+                <!-- <div> -->
+                <img id="picture" src="picture/profile/picture.jpg" alt="私の写真です。">
+                <!-- </div> -->
+            </div>
 
-/* 関数を定義 (ゲーム用) */
-/* 難易度の桁数に応じたランダムな数字を生成 */
-function generateRandomNumber(length) {
-  const max = Math.pow(10, length) - 1; // 1桁、2桁、3桁に応じた最大値
-  const min = Math.pow(10, length - 1); // 最小値
-  return Math.floor(Math.random() * (max - min + 1)) + min;
-}
+            <div id="hobby-and-picture">
+                <div id="hobby-picture">
+                    <img id="photo" src="" alt="旅行先の写真です。">
+                </div>
 
+                <div id="hobby">
+                    <p>【趣味】</p>
+                    <ol>
+                        <li>旅行</li>
+                        <li>chatGPTでジブリ風の画像作成</li>
+                    </ol>
+                    <br>
+                    <p>【直近の旅行先】</p>
+                    <ul>
+                        <li><strong>沖縄</strong> ：育休中に家族で旅行</li>
+                        <li><strong>北海道</strong> ：GWに家族で旅行予定</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
 
-/* スタートボタンを押した際の関数 */
-function startGame() {
-  const selectedDifficulty = document.querySelector('input[name="difficulty"]:checked').value; //選択した難易度を変数selectedDifficultyに代入
-  const settings = difficultySettings[selectedDifficulty]; //選択した難易度の設定を変数settingsに代入
-  displayTime = settings.time; //数字を表示する時間をdisplayTimeに代入
-  hideTime = displayTime / 10; //表示する時間の1/10の時間非表示に設定
-  totalNumbers = settings.count; //表示する数字の数をtotalNumbersに代入
-  numberLength = settings.length; //数字の桁数をnumberLengthに代入
-  randomNumbers = []; //変数randomNumbersを初期化
-  userAnswer = null; // ユーザーの回答をリセット
-  for (let i = 0; i < totalNumbers; i++) { // ランダムな数字を生成
-    randomNumbers.push(generateRandomNumber(numberLength));
-  }
-  currentIndex = 0; //randomNumbersのIndexを初期化
-  numberElement.classList.remove('hidden'); // 数字表示エリアを表示
-  numberElement.textContent = randomNumbers[currentIndex]; // 最初の数字を表示
-  answersElement.classList.add('hidden'); // 回答入力欄を隠す
-  resultElement.textContent = ''; //結果に空白を表示
-  retryBtn.classList.add('hidden'); // リトライボタンを隠す
-  const hideNumber = function () {
-    numberElement.textContent = '';
-    setTimeout(showNextNumber, hideTime)
-  }
-  const showNextNumber = function () { // 数字を表示
-    if (currentIndex < totalNumbers - 1) {
-      currentIndex++;
-      numberElement.textContent = randomNumbers[currentIndex];
-      setTimeout(hideNumber, displayTime);
-    } else {
-      normalMode();
-      numberElement.classList.add('hidden'); // 数字表示エリアを隠す
-      showAnswerInput(); // 回答入力欄を表示
-    };
-  }
-  if (selectedDifficulty === "nightmare") {
-    nightmareMode ();
-  }
-    setTimeout(hideNumber, displayTime);
-}
+        <div id="gamePage" class="page hidden">
+            <h1>フラッシュ暗算ゲーム</h1>
+            <div id="difficultySelection">
+                <h2>難易度を選択してください</h2>
+                <label>
+                    <input type="radio" name="difficulty" value="easy" checked> Easy😋　
+                </label>
+                <label>
+                    <input type="radio" name="difficulty" value="difficult"> Difficult😰　
+                </label>
+                <label>
+                    <input type="radio" name="difficulty" value="nightmare"> Nightmare😈
+                </label><br><br>
+                <button id="startBtn">スタート</button>
+            </div>
 
+            <div id="number" class="hidden"></div>
 
-/* ナイトメアモードを定義した関数 */
-function nightmareMode() {
-  const darkColors = [
-    "#4E0000", // さらに暗いダークレッド
-    "#9B1D0F", // さらに暗いオレンジレッド
-    "#7A1616", // さらに暗いファイアブリック
-    "#8B0000", // さらに暗い赤
-    "#5B006B", // さらに暗い紫
-    "#3B006B", // さらに暗いインディゴ
-    "#4B1F4B"  // さらに暗いダークマゼンタ
-  ];
+            <div id="answers" class="hidden">
+                <input type="text" placeholder="合計を入力してください">
+            </div>
 
-  let currentColorIndex = 0;
+            <button id="submitBtn" class="hidden">送信</button>
+            <button id="retryBtn" class="hidden">もう一度トライ</button>
+            <div id="result"></div>
+        </div>
 
-  // 0.1秒ごとに色を切り替える
-  intervalId = setInterval(() => {
-    htmlBody.style.backgroundColor = darkColors[currentColorIndex];
-    currentColorIndex = (currentColorIndex + 1) % darkColors.length; // インデックスを循環させる
-  }, 150); // 100ミリ秒ごとに切り替え
-}
+        <div id="summaryPage" class="page hidden">
+            <h1>まとめ</h1>
+            <div class="summary-document">
+                <h2>基礎講座での学び</h2>
+                <ul>
+                    <li class="summary-list">
+                        JavaScriptは初めて扱いましたが、<strong>簡単なHPやツール作成</strong>が出来るようになりました。
+                    </li>
+                    <li class="summary-list">
+                        単にコードが書けるだけではなく、<strong>TDDやペアプログラミングなど、プログラミングを<br>
+                        書くにあたっての考え方</strong>についても理解出来ました。
+                    </li>
+                    <li class="summary-list">
+                        <strong>ペアプログラミング</strong>を通じて、<strong>自分だけでは思いつかなかった疑問点</strong>に気づいたり、<br>
+                        <strong>新たなメソッド</strong>などに気づくことが出来ました。
+                    </li>
+                </ul>
+            </div>
+            <div class="summary-document">
+                <h2>感想</h2>
+                <ul>
+                    <li class="summary-list">
+                        Day10ぐらいまではJavaScriptでどのようにHPを動かせるのかイメージが湧かなかったですが、<br>
+                        DOMやイベントリスナーを理解すると、<strong>HP内でどのようにプログラムが動いているのかが<br>
+                        理解できて楽しい！</strong>ただ、HTMLとCSSは苦手でした、、、
+                    </li>
+                    <li class="summary-list">
+                        JavaScriptだけでなく<strong>他のプログラミング言語にも繋がる基本的な考え方</strong>を身に付けられたので、<br>
+                        他の言語も学びながら<strong>業務改善に取り組んでいきます！</strong>
+                    </li>
+                    <li class="summary-list">
+                        講義中に色々と細かい内容を質問させていただきましたが、こちらで考える余白をもたせつつも、<br>
+                        丁寧に質問に答えていただき<strong>学びが深まりました</strong>。<strong>20日間ありがとうございました！</strong>
+                    </li>
+                </ul>
+            </div>
+        </div>
 
+    </div>
 
-/* ノーマルモードを定義した関数 */
-function normalMode() {
-  clearInterval(intervalId)
-  htmlBody.style.backgroundColor = "#f0f8ff";
-}
+    <script src="script.js"></script>
 
+</body>
 
-/* 回答入力欄を表示する関数 */
-function showAnswerInput() {
-  answersElement.classList.remove('hidden'); //回答入力欄を表示
-  answersElement.querySelector('input').value = ''; //前回回答結果をリセット
-  answersElement.querySelector('input').focus(); // 最初の入力フィールドにフォーカス
-  submitBtn.classList.remove('hidden'); //送信ボタンを表示
-}
-
-
-/* イベントリスナー (ゲーム用) */
-/* スタートボタンを押した際の動作を定義 */
-startBtn.addEventListener('click', () => {
-  difficultyElement.classList.add('hidden'); // 難易度選択を隠す
-  numberElement.classList.remove('hidden'); // 数字表示エリアを表示
-  startGame(); // ゲームを開始
-});
-
-
-/* 送信ボタンを押した際の動作を定義 */
-submitBtn.addEventListener('click', function () {
-  const correctAnswer = randomNumbers.reduce((acc, num) => acc + num, 0); // 合計を計算
-  userAnswer = parseInt(answersElement.querySelector('input').value, 10);
-  resultElement.innerHTML = ''; // 結果をクリア
-  if (userAnswer === correctAnswer) {
-    resultElement.innerHTML = `正解！`;
-    resultElement.classList.add('correct');
-  } else {
-    resultElement.innerHTML = `残念！正しい合計は ${correctAnswer} です。`;
-    resultElement.classList.add('incorrect');
-  }
-  submitBtn.classList.add('hidden'); //送信ボタンを隠す
-  retryBtn.classList.remove('hidden'); // リトライボタンを表示
-});
-
-
-/* リトライボタンを押した際の動作を定義 */
-retryBtn.addEventListener('click', function () {
-  difficultyElement.classList.remove('hidden'); //難易度設定を表示
-  numberElement.classList.add('hidden'); // 数字表示エリアを隠す
-  resultElement.innerHTML = ''; // 結果をクリア
-  retryBtn.classList.add('hidden'); // 再試行ボタンを隠す
-  answersElement.classList.add('hidden'); // 回答入力欄を隠す
-});
-
-
-/* イベントリスナー (ゲーム用以外) */
-/* 自己紹介ボタンを押した際の動作を定義 */
-introBtn.addEventListener('click', function () {
-  introPage.classList.add('active');
-  introPage.classList.remove('hidden');
-  gamePage.classList.remove('active');
-  gamePage.classList.add('hidden');
-  summaryPage.classList.add('hidden'); // まとめを隠す
-});
-
-/* ゲームボタンを押した際の動作を定義 */
-gameBtn.addEventListener('click', function () {
-  introPage.classList.remove('active');
-  introPage.classList.add('hidden');
-  gamePage.classList.add('active');
-  gamePage.classList.remove('hidden');
-  summaryPage.classList.add('hidden'); // まとめを隠す
-  difficultyElement.classList.remove('hidden'); // 難易度選択を表示
-  resultElement.innerHTML = ''; // 結果をクリア
-  answersElement.classList.add('hidden'); // 回答入力欄を隠す
-  submitBtn.classList.add('hidden'); //送信ボタンを隠す
-  retryBtn.classList.add('hidden'); // 再試行ボタンを隠す
-  numberElement.classList.add('hidden'); // 数字表示エリアを隠す
-});
-
-/* まとめボタンを押した際の動作を定義 */
-summaryBtn.addEventListener('click', function () {
-  introPage.classList.remove('active');
-  introPage.classList.add('hidden');
-  gamePage.classList.remove('active');
-  gamePage.classList.add('hidden');
-  summaryPage.classList.remove('hidden'); // まとめを表示
-});
-
-
-/* 初期設定 */
-// 初期状態で自己紹介ページを表示
-introPage.classList.add('active');
-
-// ロードした際にstartSlideshowを実行する
-window.onload = startSlideshow;
+</html>
